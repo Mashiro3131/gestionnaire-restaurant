@@ -23,4 +23,4 @@ Ce projet est un gestionnaire de restaurant développé en Python avec le framew
 - CSV pour l'export des données
 - Git pour le contrôle de version
 
-## Installation et utilisation
+## Installation et utilisation 
