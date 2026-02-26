@@ -1,4 +1,4 @@
 from flask import Blueprint
-auth = Blueprint('main', __name__)
-from app.auth import routes
+main = Blueprint('main', __name__) # Crée un blueprint pour les routes principales (main)
+from app.main import routes # Importe les routes définies dans app/main/routes.py
 
