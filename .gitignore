@@ -217,16 +217,10 @@ __marimo__/
 
 
 # Documentation files
-.docs/*.xlsx
-.docs/*.xls
-.docs/*.docx
-.docs/*.doc
-docs/Nico_Mengisen_SI-C2B_Documentation_Pré-TPI_2026.docx
-.gitignore
-.gitignore
-docs/Nico_Mengisen_SI-C2B_Planification_Pré-TPI_2026.xlsx
-docs/Nico_Mengisen_SI-C2B_JournalDeTravail_Pré-TPI_2026.xlsx
 structure.md
 docs/Nico_Mengisen_SI-C4B_Documentation_Pré-TPI_2026.docx
 docs/Nico_Mengisen_SI-C4B_JournalDeTravail_Pré-TPI_2026.xlsx
 docs/Nico_Mengisen_SI-C4B_Planification_Pré-TPI_2026.xlsx
+docs/CDC Nico Mengisen_V1.0.pdf
+iko-old.dbml
+docs/MLD-old.png
