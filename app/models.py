@@ -1,5 +1,93 @@
 """
 Fichier pour les modèles de données de l'application (une sorte de phpmyadmin manuel pour sqlite). 
 Ici, on définit les classes qui représentent les tables de la base de données et leurs relations.
-Tables BDD (User, Dish, Order)
+Tables BDD (User, Dish, Order, OrderItem, Role)
 """
+
+from app.extensions import db
+from flask_login import UserMixin
+from datetime import datetime
+
+class Role(db.Model):
+    __tablename__ = 'roles'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(50), nullable=False)
+    # Relation : permet de faire role.users pour voir tous les membres
+    users = db.relationship('User', backref='role', lazy=True)
+
+
+
+
+class User(db.Model, UserMixin):
+    __tablename__ = 'users'
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(100), nullable=False)
+    email = db.Column(db.String(150), unique=True, nullable=False)
+    password = db.Column(db.String(255), nullable=False)
+    phone = db.Column(db.String(20))
+    address = db.Column(db.Text)
+    preferred_payment_method = db.Column(db.String(50))
+    
+    # Clé étrangère vers Role
+    role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
+    
+    # Date de création automatique
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    
+    # Relation : un utilisateur peut avoir plusieurs commandes
+    orders = db.relationship('Order', backref='customer', lazy=True)
+
+
+
+
+class Dish(db.Model):
+    __tablename__ = 'dishes'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+    category = db.Column(db.String(50)) # Ex: Entrée, Plat, Dessert, Boisson
+    description = db.Column(db.Text)
+    price = db.Column(db.Numeric(10, 2), nullable=False)
+    image_url = db.Column(db.String(255))
+    is_active = db.Column(db.Boolean, default=True)
+    max_daily_quantity = db.Column(db.Integer, default=20)
+    
+    # Relation : un plat peut être dans plusieurs commandes
+    order_items = db.relationship('OrderItem', backref='dish', lazy=True)
+
+
+
+
+class Order(db.Model):
+    __tablename__ = 'orders'
+    id = db.Column(db.Integer, primary_key=True)
+    
+    # Clé étrangère vers User
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    
+    order_date = db.Column(db.DateTime, default=datetime.utcnow)
+    delivery_date = db.Column(db.DateTime, nullable=False)
+    delivery_address = db.Column(db.Text)
+    special_instructions = db.Column(db.Text) # Ex: Pas d'oignons, code porte...
+    total_price = db.Column(db.Numeric(10, 2))
+    status = db.Column(db.String(50), default='en attente')
+    payment_method = db.Column(db.String(50)) # Ex: Cash, Twint, Carte
+    is_paid = db.Column(db.Boolean, default=False)
+    
+    # Relation : une commande peut avoir plusieurs plats (order_items)
+    order_items = db.relationship('OrderItem', backref='order', lazy=True)
+
+
+
+
+class OrderItem(db.Model):
+    __tablename__ = 'order_items'
+    id = db.Column(db.Integer, primary_key=True)
+    
+    # Clé étrangère vers Order
+    order_id = db.Column(db.Integer, db.ForeignKey('orders.id'))
+    
+    # Clé étrangère vers Dish
+    dish_id = db.Column(db.Integer, db.ForeignKey('dishes.id'))
+    
+    quantity = db.Column(db.Integer, nullable=False)
+    unit_price = db.Column(db.Numeric(10, 2))
