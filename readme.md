@@ -21,6 +21,6 @@ Ce projet est un gestionnaire de restaurant développé en Python avec le framew
 - Flask-Bcrypt pour le hachage des mots de passe
 - Pillow pour la gestion des images
 - CSV pour l'export des données
-- Git pour le contrôle de version
+- Babel pour la gestion de la traduction et de la localisation
 
 ## Installation et utilisation 
