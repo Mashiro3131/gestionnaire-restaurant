@@ -36,7 +36,11 @@ class User(db.Model, UserMixin):
     
     # Relation : un utilisateur peut avoir plusieurs commandes
     orders = db.relationship('Order', backref='customer', lazy=True)
-
+    
+    def __repr__(self):
+        return f"<User {self.username}>" # Ca permet d'afficher le nom de l'utilisateur au lieu de <User 1> ou <User 2> dans la console lors du débogage, ce qui est plus lisible et pratique pour identifier les utilisateurs.
+        # https://docs.sqlalchemy.org/en/21/orm/quickstart.html
+        # https://stackoverflow.com/questions/55713664/sqlalchemy-best-way-to-define-repr-for-large-tables
 
 
 
@@ -53,6 +57,9 @@ class Dish(db.Model):
     
     # Relation : un plat peut être dans plusieurs commandes
     order_items = db.relationship('OrderItem', backref='dish', lazy=True)
+    
+    def __repr__(self):
+        return f"<Dish {self.name}>" # Représentation du plat pour le débogage et l'affichage dans la console
 
 
 
@@ -75,6 +82,9 @@ class Order(db.Model):
     
     # Relation : une commande peut avoir plusieurs plats (order_items)
     order_items = db.relationship('OrderItem', backref='order', lazy=True)
+    
+    def __repr__(self):
+        return f"<Order {self.id} - User {self.user_id} - Status {self.status}>"
 
 
 
