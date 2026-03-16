@@ -16,8 +16,6 @@ def create_app():
     login_manager.init_app(app)
     babel.init_app(app, locale_selector=get_locale, timezone_selector=get_timezone)
 
-    app.route("/")(lambda: "Hello, World!")  # Route de test pour vérifier que l'app fonctionne
-
     """ Importer les routes """
     # Main Blueprint
     from app.main import main as main_bp
