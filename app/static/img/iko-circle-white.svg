@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Calque_2" data-name="Calque 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 158.38 144.23">
+  <defs>
+    <style>
+      .cls-1 {
+        letter-spacing: .03em;
+      }
+
+      .cls-2, .cls-3 {
+        stroke-linecap: round;
+      }
+
+      .cls-2, .cls-3, .cls-4, .cls-5 {
+        stroke: #000;
+        stroke-miterlimit: 10;
+      }
+
+      .cls-2, .cls-3, .cls-5 {
+        stroke-width: 4px;
+      }
+
+      .cls-2, .cls-4, .cls-6 {
+        fill: #fff;
+      }
+
+      .cls-3, .cls-5 {
+        fill: none;
+      }
+
+      .cls-7 {
+        letter-spacing: .02em;
+      }
+
+      .cls-8 {
+        letter-spacing: .01em;
+      }
+
+      .cls-4 {
+        stroke-width: 2px;
+      }
+
+      .cls-9 {
+        letter-spacing: .01em;
+      }
+
+      .cls-10 {
+        letter-spacing: .02em;
+      }
+
+      .cls-11 {
+        letter-spacing: .02em;
+      }
+
+      .cls-12 {
+        letter-spacing: .02em;
+      }
+
+      .cls-6 {
+        font-family: AcuminConcept-CondBold, 'Acumin Variable Concept';
+        font-size: 10.75px;
+        font-variation-settings: 'wght' 700, 'wdth' 67, 'slnt' 0;
+        font-weight: 700;
+      }
+    </style>
+  </defs>
+  <g id="Logo">
+    <ellipse class="cls-4" cx="79.19" cy="72.12" rx="78.19" ry="71.12"/>
+  </g>
+  <g id="Plan_6" data-name="Plan 6">
+    <g>
+      <g>
+        <path class="cls-3" d="M38.85,28.25c-2.29,11.64-4.59,23.28-6.88,34.92q-1.24,6.31-1.24,6.31c-4.1,20.47-6.77,30.68-6.09,30.89,1.35.42,6.15-40.96,34.16-57.63,8.01-4.77,15.78-6.24,20.06-6.79"/>
+        <path class="cls-3" d="M133.92,103.89c-30.32,14.11-55.06,13.35-66.47,10.19-10.81-2.99-25.2-9.38-30.77-21.34-4.58-9.86-2.19-19.79-.76-24.29"/>
+      </g>
+      <ellipse class="cls-5" cx="79.89" cy="81.25" rx="19.5" ry="34.23" transform="translate(-6.14 155.98) rotate(-86.46)"/>
+      <g>
+        <path class="cls-2" d="M126.68,51.34c-3.19,7.56-4.96,11.93-4.96,11.93"/>
+        <path class="cls-3" d="M144.68,74.4c-3.24-1.45-7.3-2.61-10.61-.78-1.5.79-2.25,2.68-.98,3.99,2.07,2.17,6.19,2.59,8.48,4.44,4.19,3.22-1.06,5.75-4.33,6.49-5.27,1.22-12.52,2.32-17.38.39"/>
+      </g>
+      <g>
+        <path class="cls-5" d="M23.86,56.75c0,1.5-1.59,1.98-2.51,1.98s-2.13-.27-2.13-1.77,1.48-1.96,2.4-1.96,2.24.25,2.24,1.75Z"/>
+        <path class="cls-3" d="M20.15,66.3c-1.93,9.79-3.86,19.58-5.78,29.36"/>
+      </g>
+    </g>
+    <text class="cls-6" transform="translate(49.91 128.78)"><tspan class="cls-12" x="0" y="0">J</tspan><tspan class="cls-7" x="3.33" y="0">U</tspan><tspan class="cls-11" x="9.13" y="0">I</tspan><tspan class="cls-8" x="11.92" y="0">C</tspan><tspan class="cls-12" x="17.2" y="0">E &amp; </tspan><tspan class="cls-1" x="33.23" y="0">C</tspan><tspan class="cls-9" x="38.68" y="0">A</tspan><tspan class="cls-10" x="44.01" y="0">F</tspan><tspan class="cls-12" x="48.78" y="0">E</tspan></text>
+  </g>
+</svg>
