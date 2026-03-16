@@ -1,9 +1,11 @@
 # Gestionnaire de restaurant
 
 ## Description du projet
+
 Ce projet est un gestionnaire de restaurant développé en Python avec le framework Flask. Il permet au restaurateur de gérer son menu, les commandes et les clients, tandis que les clients peuvent consulter le menu, passer des commandes et gérer leur profil.
 
 ## Fonctionnalités principales
+
 - **Espace Restaurateur** : Ajouter, modifier et supprimer des plats, visualiser les commandes en cours, exporter les données au format CSV.
 - **Espace Client** : Consulter le menu, ajouter des plats au panier, passer des commandes, gérer son profil.
 - **Authentification** : Système de connexion et d'inscription sécurisé avec gestion des rôles (restaurateur vs client).
@@ -11,6 +13,7 @@ Ce projet est un gestionnaire de restaurant développé en Python avec le framew
 - **Base de données** : Utilisation de SQLite pour stocker les données des utilisateurs, des plats et des commandes.
 
 ## Technologies utilisées
+
 - Python 3
 - Flask
 - SQLite
@@ -23,4 +26,11 @@ Ce projet est un gestionnaire de restaurant développé en Python avec le framew
 - CSV pour l'export des données
 - Babel pour la gestion de la traduction et de la localisation
 
-## Installation et utilisation 
+## Installation et utilisation
+
+blabla
+
+## Sources
+
+- [Flask Mega-Tutorial de Miguel Grinberg](https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-v-user-logins)
+- [User Authentication and Authorization in Flask](https://medium.com/@mathur.danduprolu/user-authentication-and-authorization-in-flask-building-secure-login-and-access-control-part-5-7-59679a08cdc3)
