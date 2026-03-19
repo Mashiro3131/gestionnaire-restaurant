@@ -1,7 +1,7 @@
 from werkzeug.security import generate_password_hash
 from app import create_app, db
 from app.models import User, Role, Dish
-
+from colorama import Fore, Style
 
 
 def seed_database():
@@ -9,13 +9,13 @@ def seed_database():
     app = create_app()
     with app.app_context():
         try :
-            print("--- Nettoyage de la base de données ---")
+            print(Fore.LIGHTYELLOW_EX + "\n--- Nettoyage de la base de données ---")
             db.drop_all()
             db.create_all()
 
 
             # Création des Rôles
-            print("--- Création des rôles ---")
+            print(Fore.LIGHTGREEN_EX + "\n--- Création des rôles ---")
             admin_role = Role(name="admin")
             staff_role = Role(name="staff")
             client_role = Role(name="client")
@@ -25,7 +25,7 @@ def seed_database():
 
 
             # 2. Création des Utilisateurs
-            print("--- Création des utilisateurs ---")
+            print(Fore.LIGHTGREEN_EX + "--- Création des utilisateurs ---")
             # Un compte Admin pour toi
             admin_user = User(
                 first_name="Iko",
@@ -60,7 +60,7 @@ def seed_database():
 
 
             # Création du Menu
-            print("--- Création du menu ---")
+            print(Fore.LIGHTGREEN_EX + "--- Création du menu ---")
             dishes = [
                 Dish(
                     name="Le Manchot Gourmet",
@@ -108,21 +108,21 @@ def seed_database():
             
         # Si y'a une erreur, on affiche l'erreur et on annule les changements
         except Exception as e:
-            print("Erreur lors de l'ajout des plats :", e)
+            print(Fore.RED + "Erreur lors de l'ajout des plats :", e)
             db.session.rollback()
         
         # Si y'a pas eu d'erreur, feu vert pour query la db
         else:
-            print("Plats ajoutés avec succès !")
+            print(Fore.LIGHTGREEN_EX + "--- Plats ajoutés avec succès ! ---")
             # Query la db 
             db.session.commit()
         
         
         # Print des infos de connexion
-        print("--- Base de données initialisée avec succès ! ---")
-        print("Admin : admin@ikos.ch / Admin123!")
-        print("Staff : staff@ikos.ch / Staff123!")
-        print("Client : nico.mengisen@gmail.com / Client123!")
+        print(Fore.MAGENTA + "\n--- Base de données initialisée avec succès ! ---")
+        print(Fore.LIGHTBLUE_EX + "\nAdmin : admin@ikos.ch / Admin123!")
+        print(Fore.LIGHTBLUE_EX + "Staff : staff@ikos.ch / Staff123!")
+        print(Fore.LIGHTBLUE_EX + "Client : nico.mengisen@gmail.com / Client123!")
 
 
 
