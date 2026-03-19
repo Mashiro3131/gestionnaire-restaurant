@@ -224,3 +224,4 @@ docs/Nico_Mengisen_SI-C4B_Planification_Pré-TPI_2026.xlsx
 docs/CDC Nico Mengisen_V1.0.pdf
 iko-old.dbml
 docs/MLD-old.png
+tests/test_babel.py
