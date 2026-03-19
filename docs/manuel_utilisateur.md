@@ -1,6 +1,6 @@
 # Mannuel d'installation
 
-### Créer le fichier restaurant.db
+### Créer la base de données et le fichier restaurant.db
 
 ```python
 from app import create_app, db
@@ -25,21 +25,17 @@ Mode                 LastWriteTime         Length Name
 *[Documentation](https://docs.sqlalchemy.org/en/20/core/engines.html)*
 
 ### Vérifier que les tables ont bien été créées
-```PYTHON
-# Voir les tables créées
-app = create_app()
-with app.app_context():
-    # Cette commande liste les tables détectées par SQLAlchemy
-    print(db.inspect(db.engine).get_table_names())
+```python
 
-# Si rien apparait, on relance la création
-with app.app_context():
-    db.create_all()
-    print("Tables créées :", db.inspect(db.engine).get_table_names())
-
-# Résultat attendu :
+>>> app = create_app()
 >>> with app.app_context():
-...     db.create_all()
-...     print("Tables créées :", db.inspect(db.engine).get_table_names())
+...     try:
+                db.drop_all()
+...             db.create_all()
+...     except Exception as e:
+...             print("Erreur lors de la création des tables :", e)
+...     else:
+...             print("Tables créées :", db.inspect(db.engine).get_table_names())
 ... 
 Tables créées : ['dishes', 'order_items', 'orders', 'roles', 'users']
+```
