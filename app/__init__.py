@@ -3,7 +3,8 @@ Crée le backbone du projet Flask en configurant les routes, les modèles de don
 """
 
 from flask import Flask,request, g 
-from app.extensions import db, login_manager, babel
+from app.extensions import db, login_manager
+#, babel
 from config import Config
 
 
@@ -14,7 +15,7 @@ def create_app():
     # Initialiser les extensions
     db.init_app(app)
     login_manager.init_app(app)
-    babel.init_app(app, locale_selector=get_locale, timezone_selector=get_timezone)
+    #babel.init_app(app, locale_selector=get_locale, timezone_selector=get_timezone)
 
     """ Importer les routes """
     # Main Blueprint
