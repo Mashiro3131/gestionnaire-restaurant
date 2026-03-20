@@ -40,6 +40,7 @@ def seed_database():
             staff_user = User(
                 first_name="Iko",
                 last_name="Staff",
+                username="staff_iko",
                 email="staff@ikos.ch",
                 password=generate_password_hash("Staff123!"),
                 role=staff_role
