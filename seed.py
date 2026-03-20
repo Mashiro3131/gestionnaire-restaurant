@@ -1,7 +1,7 @@
 from werkzeug.security import generate_password_hash
 from app import create_app, db
 from app.models import User, Role, Dish
-from colorama import Fore, Style
+from colorama import Fore
 
 
 def seed_database():
@@ -40,7 +40,6 @@ def seed_database():
             staff_user = User(
                 first_name="Iko",
                 last_name="Staff",
-                username="sophie_staff",
                 email="staff@ikos.ch",
                 password=generate_password_hash("Staff123!"),
                 role=staff_role
