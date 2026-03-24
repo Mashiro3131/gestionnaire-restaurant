@@ -1,13 +1,18 @@
-from flask import render_template, abort
+from flask import render_template, abort, url_for, redirect, flash
+from flask_login import current_user, login_required
 from jinja2 import TemplateNotFound
-from app.admin import admin
+from app.admin import admin as admin
 from app.models import Dish
 
 
 @admin.route('/admin')
-# @login_required
+@login_required 
 def admin_dashboard():
-    # CRUD Plats
+    # Vérifie si le rôle lié à l'utilisateur est bien admin
+    if not current_user.role or current_user.role.name != 'admin':
+        flash("Accès réservé aux administrateurs.", "danger")
+        return redirect(url_for('index'))
+        
     dishes = Dish.query.all()
     return render_template('admin/dashboard.html', dishes=dishes)
 
@@ -20,3 +25,5 @@ def show_dashboard():
     
     except TemplateNotFound:
         abort(404)
+        
+        
