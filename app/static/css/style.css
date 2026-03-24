@@ -66,3 +66,82 @@ body {
     transform: scale(1.1);
     opacity: 0.7;
 }
+
+/* --- ALERTS (Flash Messages) --- */
+.alert {
+    border-radius: 0;
+    border: none;
+    font-weight: 600;
+}
+
+/* --- COMPTEUR D'ITEM DANS PANIER --- */
+
+.cart-badge {
+    position: absolute;
+    top: -8px; 
+    right: -10px;
+    background-color: #198754; 
+    color: white;
+    font-size: 12px;
+    /* font-weight: 700; */
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+}
+
+/* Style général pour les sidebars (Offcanvas) */
+.offcanvas {
+    transition: transform 0.4s ease-in-out;
+}
+
+.offcanvas-header {
+    padding: 2rem 3rem 1rem 3rem;
+}
+
+.offcanvas-title {
+    font-size: 1.5rem;
+}
+
+/* Boutons de la sidebar */
+.offcanvas .btn-dark {
+    letter-spacing: 1px;
+}
+
+
+/* Empêche le texte de chevaucher l'icône SVG */
+.pe-5 {
+    padding-right: 3.5rem !important;
+}
+
+/* Empêche le texte de chevaucher l'icône SVG */
+.pe-5 {
+    padding-right: 3.5rem !important;
+}
+
+/* --- Icône toggle password --- */
+.password-toggle {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    
+    width: 22px;
+    height: 22px;
+    object-fit: contain;
+
+    cursor: pointer;
+    z-index: 10;
+
+    opacity: 0.6;
+    transition: all 0.2s ease;
+}
+
+/* Hover Oeuil */
+.password-toggle:hover {
+    opacity: 1;
+    transform: translateY(-50%) scale(1.1);
+}
