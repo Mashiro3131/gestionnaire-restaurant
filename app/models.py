@@ -1,7 +1,6 @@
 """
-Fichier pour les modèles de données de l'application (une sorte de phpmyadmin manuel pour sqlite). 
-Ici, on définit les classes qui représentent les tables de la base de données et leurs relations.
-Tables BDD (User, Dish, Order, OrderItem, Role)
+Fichier pour les modèles de données de l'application. 
+Définit les classes représentant les tables de la base de données (User, Dish, Order, OrderItem, Role)
 """
 
 import uuid
@@ -42,18 +41,22 @@ class User(db.Model, UserMixin):
     password = Column(String(255), nullable=False)
     phone = Column(String(20))
     address = Column(Text)
+    city = Column(String(100))
+    zip_code = Column(String(10))
     preferred_payment_method = Column(String(50))
     role_id = Column(String(36), ForeignKey("roles.id"))
     created_at = Column(DateTime, default=datetime.utcnow)
 
     orders = relationship("Order", backref="customer", lazy=True)
 
-    def set_password(self, password):
-        self.password_hash = generate_password_hash(password)
-
-    def check_password(self, password):
-        return check_password_hash(self.password_hash, password)
-
+    # Hache le mdp pour plus de sécurité
+    def set_password(self, password_brut):
+        self.password = generate_password_hash(password_brut)
+    
+    # Vérifie le mot de passe par rapport au hash stocké dans "password"
+    def check_password(self, password_brut):
+        
+        return check_password_hash(str(self.password), password_brut)
 
     def __init__(self, **kwargs):
         super(User, self).__init__(**kwargs)
