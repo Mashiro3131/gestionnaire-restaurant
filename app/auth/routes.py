@@ -1,99 +1,107 @@
 # # https://flask.palletsprojects.com/en/stable/tutorial/views/
 
-# from flask import render_template, redirect, url_for, flash, request
-# from app.auth import auth as auth_bp
-# from app.auth.forms import LoginForm, RegisterForm
-# from werkzeug.security import check_password_hash, generate_password_hash
-# from app.models import User
-# from flask_login import login_user, logout_user, current_user
-# import instance
-
-
-# @auth_bp.route('/register', methods=['GET', 'POST'])
-# def register():
-#     """Route pour l'inscription d'un nouvel utilisateur."""
-#     if current_user.is_authenticated:
-#         return redirect(url_for('main.index')) # Redirige vers l'accueil si déjà connecté
-    
-#     form = RegisterForm()
-#     if form.validate_on_submit():
-#         # Hachage du mot de passe (ne JAMAIS stocker en clair)
-#         hashed_pw = generate_password_hash(form.password.data)
-        
-#         user = User(
-#             username=form.username.data,
-#             email=form.email.data.lower(), # On stocke en minuscule par convention
-#             password=hashed_pw
-#         )
-        
-#         try:
-#             db.session.add(user)
-#             db.session.commit()
-#             flash('Félicitations, vous êtes maintenant inscrit !', 'success')
-#             return redirect(url_for('auth.login'))
-#         except Exception as e:
-#             db.session.rollback()
-#             flash('Une erreur est survenue lors de l\'inscription.', 'danger')
-            
-#     return render_template('auth/register.html', title='Inscription', form=form)
-
-
-# @auth_bp.route('/login', methods=['GET', 'POST'])
-# def login():
-#     """Route pour la connexion des utilisateurs."""
-#     if current_user.is_authenticated:
-#         return redirect(url_for('main.index'))
-    
-#     form = LoginForm()
-#     if form.validate_on_submit():
-#         user = User.query.filter_by(email=form.email.data.lower()).first()
-        
-#         # Vérification de l'existence et du mot de passe haché
-#         if user and check_password_hash(user.password, form.password.data):
-#             login_user(user)
-            
-#             # Gestion de la redirection "next" (si l'user venait d'une page protégée)
-#             next_page = request.args.get('next')
-#             flash(f'Ravi de vous revoir, {user.username} !', 'info')
-#             return redirect(next_page) if next_page else redirect(url_for('main.index'))
-#         else:
-#             flash('Connexion échouée. Vérifiez vos identifiants.', 'danger')
-            
-#     return render_template('auth/login.html', title='Connexion', form=form)
-
-
-# @auth_bp.route('/logout')
-
-# @login_required
-# def logout():
-#     """Route pour la déconnexion."""
-#     logout_user()
-#     flash('Vous avez été déconnecté.', 'secondary')
-#     return redirect(url_for('main.index'))
-
-
 from flask import render_template, request, redirect, url_for, flash
 from flask_login import login_user, logout_user, login_required, current_user
-from app import app, db
+from app.auth import auth as auth_bp
+from app import db
 from app.models import User
 
-@app.route('/login', methods=['GET', 'POST'])
+
+"""
+
+------ LOGIN ------
+
+"""
+
+@auth_bp.route('/login', methods=['POST'])
 def login():
+    if current_user.is_authenticated:
+        return redirect(url_for('main.index'))
+
     if request.method == 'POST':
-        email = request.form.get('email')
+        email = request.form.get('email', '').strip().lower()
         password = request.form.get('password')
         
         user = User.query.filter_by(email=email).first()
         
-        # On utilise la méthode check_password de ton modèle
+        # Utilise la méthode check_password de ton modèle
         if user and user.check_password(password):
-            login_user(user) # Flask-Login gère la session tout seul
-            flash('Bienvenue !', 'success')
+            login_user(user)
+            flash(f'Ravi de vous revoir, {user.first_name} !', 'success')
             
-            # Si c'est un admin (on vérifie via la relation backref 'role' de ton modèle)
             if user.role and user.role.name == 'admin':
-                return redirect(url_for('admin_dashboard'))
-            return redirect(url_for('index'))
+                return redirect(url_for('admin.dashboard'))
+            return redirect(url_for('main.index'))
         
         flash('Email ou mot de passe incorrect.', 'danger')
-    return render_template('login.html')
+    
+    return redirect(url_for('main.index'))
+
+
+"""
+
+------ REGISTER ------
+
+"""
+
+@auth_bp.route('/register', methods=['POST'])
+def register():
+    if current_user.is_authenticated:
+        return redirect(url_for('main.index'))
+
+    if request.method == 'POST':
+        # Extraction des données du formulaire
+        first_name = request.form.get('first_name', '').strip()
+        last_name = request.form.get('last_name', '').strip()
+        email = request.form.get('email', '').strip().lower()
+        password = request.form.get('password')
+        phone = request.form.get('phone', '').strip()
+        
+        # On combine Code Postal et Ville dans le champ 'address' de ton modèle
+        zip_code = request.form.get('zip_code', '').strip()
+        city = request.form.get('city', '').strip()
+        full_address = f"{zip_code} {city}".strip()
+
+        # Vérification si l'utilisateur existe déjà
+        if User.query.filter_by(email=email).first():
+            flash('Cet email est déjà enregistré.', 'warning')
+            return redirect(url_for('main.index'))
+        
+        # Génération de l'username pour ton modèle
+        username_gen = f"{first_name.lower()}.{last_name.lower()}" if first_name else email.split('@')[0]
+
+        new_user = User(
+            first_name=first_name,
+            last_name=last_name,
+            username=username_gen,
+            email=email,
+            phone=phone,
+            address=full_address
+        )
+        # On définit le mot de passe (le hachage est géré par la méthode du modèle)
+        new_user.set_password(password)
+        
+        try:
+            db.session.add(new_user)
+            db.session.commit()
+            flash('Inscription réussie !', 'success')
+            login_user(new_user)
+        except Exception as e:
+            db.session.rollback()
+            flash('Erreur lors de la création du compte.', 'danger')
+
+    return redirect(url_for('main.index'))
+
+
+"""
+
+------ LOGOUT ------
+
+"""
+
+@auth_bp.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    flash('Vous avez été déconnecté.', 'info')
+    return redirect(url_for('main.index'))
