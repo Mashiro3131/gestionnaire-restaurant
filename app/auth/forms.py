@@ -1,4 +1,34 @@
+from flask_wtf import FlaskForm
+from wtforms import StringField, PasswordField, BooleanField, SubmitField
+from wtforms.validators import DataRequired, Email, Length, EqualTo, ValidationError
+from app.models import User
 
+class LoginForm(FlaskForm):
+    """Formulaire de connexion"""
+    email = StringField('E-Mail', validators=[DataRequired(), Email()])
+    password = PasswordField('Passwort', validators=[DataRequired()])
+    remember_me = BooleanField('Se souvenir de moi')
+    submit = SubmitField('JETZT ANMELDEN')
+
+class RegisterForm(FlaskForm):
+    """Formulaire d'inscription"""
+    first_name = StringField('Prénom', validators=[DataRequired(), Length(min=2, max=50)])
+    last_name = StringField('Nom', validators=[DataRequired(), Length(min=2, max=50)])
+    email = StringField('Adresse de courriel', validators=[DataRequired(), Email()])
+    password = PasswordField('Mot de passe', validators=[
+        DataRequired(), 
+        Length(min=8, message="Le mot de passe doit faire au moins 8 caractères.")
+    ])
+    # Optionnel : si tu veux un champ de confirmation
+    # confirm_password = PasswordField('Confirmer', validators=[DataRequired(), EqualTo('password')])
+    
+    submit = SubmitField("S'INSCRIRE MAINTENANT")
+
+    def validate_email(self, email):
+        """Vérifie si l'email est déjà pris pendant la saisie"""
+        user = User.query.filter_by(email=email.data).first()
+        if user:
+            raise ValidationError('Cette adresse email est déjà utilisée.')
 
 
 
