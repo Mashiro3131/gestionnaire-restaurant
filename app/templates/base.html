@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="fr">
-
 <!-- =========================================================
      HEAD : Configuration globale du document
      ========================================================= -->
@@ -8,33 +7,27 @@
 <head>
     <meta charset="UTF-8">
     
-    <!-- Responsive design -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <title>Iko's - Restaurant</title>
-
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='img/favico.svg') }}" sizes="32x32">
-
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
 
-    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
 
-    <!-- CSS personnalisé -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 
 
 <body>
-
 <!-- =========================================================
      NAVBAR : Barre de navigation principale
      ========================================================= -->
 <nav class="navbar navbar-expand-lg navbar-ikos sticky-top">
     <div class="container">
-
         <!-- Logo -->
         <a class="navbar-brand" href="{{ url_for('main.index') }}">
             <img src="{{ url_for('static', filename='img/iko-logo-black.svg') }}"
@@ -42,23 +35,20 @@
                  height="55"
                  class="d-inline-block align-top">
         </a>
-
         <!-- Bouton mobile -->
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
             <span class="navbar-toggler-icon"></span>
         </button>
-
-        <!-- Liens navigation -->
+        <!-- Navbar -->
         <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
             <div class="navbar-nav">
 
                 <a class="nav-link-ikos mx-3" href="{{ url_for('main.index') }}">Home</a>
-                <a class="nav-link-ikos mx-3" href="#menu">Menu</a>
-                <a class="nav-link-ikos mx-3" href="/order">Order</a>
-                <a class="nav-link-ikos mx-3" href="/contact">Contact</a>
-
-                <!-- Lien admin condition flask -->
-                {% if current_user.is_authenticated and current_user.role.name == 'admin' %}
+                <a class="nav-link-ikos mx-3" href="{{ url_for('main.menu') }}">Menu</a>
+                <a class="nav-link-ikos mx-3" href="{{ url_for('main.order') }}">Order</a>
+                <a class="nav-link-ikos mx-3" href="{{ url_for('main.contact') }}">Contact</a>
+                <!-- Lien admin FLASK -->
+                {% if current_user.is_authenticated and current_user.role and current_user.role.name == 'admin' %}
                     <a class="nav-link-ikos mx-3 text-primary fw-bold" href="{{ url_for('admin.dashboard') }}">
                         Admin
                     </a>
@@ -69,7 +59,6 @@
 
         <!-- Icônes droite -->
         <div class="d-flex align-items-center">
-
             <!-- Compte -->
             <a href="#" class="me-3" data-bs-toggle="offcanvas" data-bs-target="#sidebarAuth">
                 <img src="{{ url_for('static', filename='img/account-logo-black.svg') }}"
@@ -77,7 +66,6 @@
                      width="24"
                      height="24">
             </a>
-
             <!-- Panier -->
             <div class="position-relative">
                 <a href="#" data-bs-toggle="offcanvas" data-bs-target="#cartSidebar">
@@ -85,7 +73,6 @@
                          alt="Shopping cart"
                          width="24"
                          height="24">
-
                     <!-- Badge compteur -->
                     <span id="cart-count" class="cart-badge">
                         {{ session.get('cart', [])|length }}
@@ -97,7 +84,6 @@
     </div>
 </nav>
 
-
 <!-- =========================================================
      ALERTES : Messages système Flask
      ========================================================= -->
@@ -105,7 +91,7 @@
     {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
             {% for category, message in messages %}
-                <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                <div class="alert alert-{{ category }} alert-dismissible fade show shadow-sm rounded-4" role="alert">
                     {{ message }}
                     <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                 </div>
@@ -115,17 +101,6 @@
 </div>
 
 
-<!-- =========================================================
-     CONTENU PRINCIPAL (hérité des templates)
-     ========================================================= -->
-<main>
-    {% block content %}{% endblock %}
-</main>
-
-
-<!-- =========================================================
-     SIDEBAR AUTH : Connexion / Inscription
-     ========================================================= -->
 <div class="offcanvas offcanvas-end border-0 shadow-lg" id="sidebarAuth" style="width: 450px;">
 
     <!-- Bouton fermer -->
@@ -134,212 +109,222 @@
     </div>
 
     <div class="offcanvas-body px-5">
-
         <!-- ================= LOGIN ================= -->
-        <div id="section-login">
-            <h1 class="fw-bold mb-4">CONNEXION</h1>
+        {% if current_user.is_authenticated %}
+            <div id="section-profile">
+                <h1 class="fw-bold mb-2">BONJOUR,</h1>
+                <h2 class="text-muted mb-5">{{ current_user.first_name|upper }}</h2>
 
-            <form action="{{ url_for('auth.login') }}" method="POST">
-                
-                <div class="form-floating mb-3">
-                    <input type="email" name="email" class="form-control" id="loginEmail" required>
-                    <label for="loginEmail">E-Mail</label>
+                <div class="list-group list-group-flush mb-5">
+                    <a href="#" class="list-group-item list-group-item-action border-0 py-3 px-0 d-flex justify-content-between align-items-center">
+                        <span><i class="bi bi-person me-2"></i> Mon Profil</span>
+                        <i class="bi bi-chevron-right small"></i>
+                    </a>
+                    <a href="#" class="list-group-item list-group-item-action border-0 py-3 px-0 d-flex justify-content-between align-items-center">
+                        <span><i class="bi bi-bag me-2"></i> Mes Commandes</span>
+                        <i class="bi bi-chevron-right small"></i>
+                    </a>
                 </div>
 
-                <div class="form-floating mb-3 position-relative">
-                    <input type="password" name="password" class="form-control pe-5" id="loginPass" required>
-                    <label for="loginPass">Mot de passe</label>
+                <a href="{{ url_for('auth.logout') }}" class="btn btn-outline-danger w-100 py-3 fw-bold rounded-pill">
+                    SE DÉCONNECTER
+                </a>
+            </div>
+        {% else %}
+            <div id="section-login">
+                <h1 class="fw-bold mb-4">CONNEXION</h1>
+
+                <form action="{{ url_for('auth.login') }}" method="POST">
                     
-                    <img 
-                        class="password-toggle"
-                        src="{{ url_for('static', filename='img/hide-pwd.svg') }}"  
-                        alt="Toggle password"
-                        data-show-path="{{ url_for('static', filename='img/show-pwd.svg') }}"
-                        data-hide-path="{{ url_for('static', filename='img/hide-pwd.svg') }}">
-                </div>
+                    <div class="form-floating mb-3">
+                        <input type="email" name="email" class="form-control rounded-3" id="loginEmail" required>
+                        <label for="loginEmail">E-Mail</label>
+                    </div>
 
-                <button type="submit" class="btn btn-dark w-100 py-3 fw-bold">
-                    SE CONNECTER
+                    <div class="form-floating mb-3 position-relative">
+                        <input type="password" name="password" class="form-control pe-5 rounded-3" id="loginPass" required>
+                        <label for="loginPass">Mot de passe</label>
+                        
+                        <img 
+                            class="password-toggle"
+                            src="{{ url_for('static', filename='img/hide-pwd.svg') }}"  
+                            alt="Toggle password"
+                            data-show-path="{{ url_for('static', filename='img/show-pwd.svg') }}"
+                            data-hide-path="{{ url_for('static', filename='img/hide-pwd.svg') }}">
+                    </div>
+
+                    <button type="submit" class="btn btn-dark w-100 py-3 fw-bold rounded-pill">
+                        SE CONNECTER
+                    </button>
+                </form>
+                <!-- Switch vers inscription -->
+                <button onclick="switchAuth('register')" class="btn btn-outline-dark w-100 mt-4 rounded-pill">
+                    S'INSCRIRE
                 </button>
-            </form>
+            </div>
 
-            <!-- Switch vers inscription -->
-            <button onclick="switchAuth('register')" class="btn btn-outline-dark w-100 mt-4">
-                S'INSCRIRE
-            </button>
-        </div>
+            <!-- ================= REGISTER ================= -->
+            <div id="section-register" style="display: none;">
+                <h1 class="fw-bold mb-4">INSCRIPTION</h1>
 
+                <form action="{{ url_for('auth.register') }}" method="POST">
 
-        <!-- ================= REGISTER ================= -->
-        <div id="section-register" style="display: none;">
-            <h1 class="fw-bold mb-4">INSCRIPTION</h1>
+                    <h6 class="fw-bold mb-3 small text-uppercase text-muted" style="letter-spacing: 1px;">
+                        Identité
+                    </h6>
 
-            <form action="{{ url_for('auth.register') }}" method="POST">
-
-                <h6 class="fw-bold mb-3 small text-uppercase text-muted" style="letter-spacing: 1px;">
-                    Identité
-                </h6>
-
-                <div class="row g-2 mb-3">
-                    <div class="col-md-6">
-                        <div class="form-floating">
-                            <input type="text" name="first_name" class="form-control" id="regFirst" placeholder="Prénom" required>
-                            <label for="regFirst">Prénom</label>
+                    <div class="row g-2 mb-3">
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <input type="text" name="first_name" class="form-control rounded-3" id="regFirst" placeholder="Prénom" required>
+                                <label for="regFirst">Prénom</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <input type="text" name="last_name" class="form-control rounded-3" id="regLast" placeholder="Nom" required>
+                                <label for="regLast">Nom</label>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <div class="form-floating">
-                            <input type="text" name="last_name" class="form-control" id="regLast" placeholder="Nom" required>
-                            <label for="regLast">Nom</label>
+
+                    <h6 class="fw-bold mb-3 mt-4 small text-uppercase text-muted" style="letter-spacing: 1px;">
+                        Adresse & Contact
+                    </h6>
+
+                    <div class="form-floating mb-3">
+                        <input type="text" name="address" class="form-control rounded-3" id="regAddress" placeholder="Rue et n°" required>
+                        <label for="regAddress">Rue et n°</label>
+                    </div>
+
+                    <div class="row g-2 mb-3">
+                        <div class="col-4">
+                            <div class="form-floating">
+                                <input type="text" name="zip_code" class="form-control rounded-3" id="regZip" placeholder="CP" required>
+                                <label for="regZip">CP</label>
+                            </div>
+                        </div>
+                        <div class="col-8">
+                            <div class="form-floating">
+                                <input type="text" name="city" class="form-control rounded-3" id="regCity" placeholder="Ville" required>
+                                <label for="regCity">Ville</label>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <h6 class="fw-bold mb-3 mt-4 small text-uppercase text-muted" style="letter-spacing: 1px;">
-                    Adresse & Contact
-                </h6>
+                    <div class="form-floating mb-3">
+                        <input type="tel" name="phone" class="form-control rounded-3" id="regPhone" placeholder="079..." required>
+                        <label for="regPhone">Numéro de portable</label>
+                    </div>
 
-                <div class="form-floating mb-3">
-                    <input type="text" name="address" class="form-control" id="regAddress" placeholder="Rue et n°" required>
-                    <label for="regAddress">Rue et n°</label>
-                </div>
+                    <h6 class="fw-bold mb-3 mt-4 small text-uppercase text-muted" style="letter-spacing: 1px;">
+                        Vos données de connexion
+                    </h6>
 
-                <div class="row g-2 mb-3">
-                    <div class="col-4">
-                        <div class="form-floating">
-                            <input type="text" name="zip_code" class="form-control" id="regZip" placeholder="CP" required>
-                            <label for="regZip">CP</label>
+                    <div class="form-floating mb-1"> 
+                        <input type="email" 
+                        name="email" 
+                        class="form-control rounded-3" 
+                        id="regEmail" 
+                        placeholder="E-Mail" required>
+                        <label for="regEmail">E-Mail</label>
+                    </div>
+                    <div id="email-feedback" class="text-danger small mb-3" style="display: none; font-size: 0.75rem;">
+                        Veuillez entrer une adresse de courriel valable.
+                    </div>
+
+                    <div class="form-floating mb-2 position-relative">
+                        <input type="password" name="password" class="form-control pe-5 rounded-3" id="regPassword" placeholder="Mot de passe" required>
+                        <label for="regPassword">Mot de passe</label>
+                        
+                        <img 
+                            class="password-toggle"
+                            src="{{ url_for('static', filename='img/hide-pwd.svg') }}"  
+                            alt="Toggle password"
+                            data-show-path="{{ url_for('static', filename='img/show-pwd.svg') }}"
+                            data-hide-path="{{ url_for('static', filename='img/hide-pwd.svg') }}">
+                    </div>
+
+                    <div id="password-requirements" class="mb-4 small">
+                        <div id="req-length" class="text-muted d-flex align-items-center mb-1">
+                            <img src="{{ url_for('static', filename='img/pwd-gray.svg') }}" class="me-2 req-icon" width="14" 
+                                data-gray="{{ url_for('static', filename='img/pwd-gray.svg') }}"
+                                data-red="{{ url_for('static', filename='img/pwd-red.svg') }}"
+                                data-green="{{ url_for('static', filename='img/pwd-green.svg') }}">
+                            Minimum 10 caractères
+                        </div>
+                        <div id="req-cases" class="text-muted d-flex align-items-center mb-1">
+                            <img src="{{ url_for('static', filename='img/pwd-gray.svg') }}" class="me-2 req-icon" width="14">
+                            AaBbCc (Maj & Min)
+                        </div>
+                        <div id="req-numbers" class="text-muted d-flex align-items-center mb-1">
+                            <img src="{{ url_for('static', filename='img/pwd-gray.svg') }}" class="me-2 req-icon" width="14">
+                            0-9 (Chiffres)
+                        </div>
+                        <div id="req-special" class="text-muted d-flex align-items-center mb-1">
+                            <img src="{{ url_for('static', filename='img/pwd-gray.svg') }}" class="me-2 req-icon" width="14">
+                            !?#%$* (Spécial)
                         </div>
                     </div>
-                    <div class="col-8">
-                        <div class="form-floating">
-                            <input type="text" name="city" class="form-control" id="regCity" placeholder="Ville" required>
-                            <label for="regCity">Ville</label>
-                        </div>
-                    </div>
-                </div>
 
-                <div class="form-floating mb-3">
-                    <input type="tel" name="phone" class="form-control" id="regPhone" placeholder="079..." required>
-                    <label for="regPhone">Numéro de portable</label>
-                </div>
+                    <button type="submit" class="btn btn-dark w-100 py-3 fw-bold rounded-pill">
+                        CRÉER MON COMPTE
+                    </button>
+                </form>
 
-                <h6 class="fw-bold mb-3 mt-4 small text-uppercase text-muted" style="letter-spacing: 1px;">
-                    Vos données de connexion
-                </h6>
-
-                <div class="form-floating mb-1"> 
-                    
-                    <input type="email" 
-                    name="email" 
-                    class="form-control" 
-                    id="regEmail" 
-                    placeholder="E-Mail" required>
-
-                <label for="regEmail">
-                    E-Mail
-                </label>
-</div>
-<div id="email-feedback" class="text-danger small mb-3" style="display: none; font-size: 0.75rem;">
-    Veuillez entrer une adresse de courriel valable.
-</div>
-
-                <div class="form-floating mb-2 position-relative">
-                    <input type="password" name="password" class="form-control pe-5" id="regPassword" placeholder="Mot de passe" required>
-                    <label for="regPassword">Mot de passe</label>
-                    
-                    <img 
-                        class="password-toggle"
-                        src="{{ url_for('static', filename='img/hide-pwd.svg') }}"  
-                        alt="Toggle password"
-                        data-show-path="{{ url_for('static', filename='img/show-pwd.svg') }}"
-                        data-hide-path="{{ url_for('static', filename='img/hide-pwd.svg') }}">
-                </div>
-
-                <div id="password-requirements" class="mb-4 small">
-                    <div id="req-length" class="text-muted d-flex align-items-center mb-1">
-                        <img src="{{ url_for('static', filename='img/pwd-gray.svg') }}" class="me-2 req-icon" width="14" 
-                            data-gray="{{ url_for('static', filename='img/pwd-gray.svg') }}"
-                            data-red="{{ url_for('static', filename='img/pwd-red.svg') }}"
-                            data-green="{{ url_for('static', filename='img/pwd-green.svg') }}">
-                        Minimum 10 caractères
-                    </div>
-
-                    <div id="req-cases" class="text-muted d-flex align-items-center mb-1">
-                        <img src="{{ url_for('static', filename='img/pwd-gray.svg') }}" class="me-2 req-icon" width="14">
-                        AaBbCc (Maj & Min)
-                    </div>
-
-                    <div id="req-numbers" class="text-muted d-flex align-items-center mb-1">
-                        <img src="{{ url_for('static', filename='img/pwd-gray.svg') }}" class="me-2 req-icon" width="14">
-                        0-9 (Chiffres)
-                    </div>
-
-                    <div id="req-special" class="text-muted d-flex align-items-center mb-1">
-                        <img src="{{ url_for('static', filename='img/pwd-gray.svg') }}" class="me-2 req-icon" width="14">
-                        !?#%$* (Spécial)
-                    </div>
-                </div>
-
-                <button type="submit" class="btn btn-dark w-100 py-3 fw-bold">
-                    CRÉER MON COMPTE
+                <button onclick="switchAuth('login')" class="btn btn-link text-dark mt-4 w-100 text-decoration-none small">
+                    ← Retour à la connexion
                 </button>
-            </form>
-
-            <button onclick="switchAuth('login')" class="btn btn-link text-dark mt-4 w-100 text-decoration-none small">
-                ← Retour à la connexion
-            </button>
-        </div>
+            </div>
+        {% endif %}
 
     </div>
 </div>
-
 <!-- =========================================================
      SIDEBAR PANIER
      ========================================================= -->
 <div class="offcanvas offcanvas-end border-0 shadow-lg" id="cartSidebar" style="width: 450px;">
 
-    <!-- Header -->
     <div class="offcanvas-header border-bottom">
         <h5 class="fw-bold">MON PANIER</h5>
         <button class="btn-close" data-bs-dismiss="offcanvas"></button>
     </div>
 
-    <!-- Contenu -->
     <div class="offcanvas-body">
 
         {% if session.get('cart') %}
             {% for item in session['cart'] %}
                 <div class="d-flex mb-4">
-
-                    <img src="{{ item.image_url }}" class="img-fluid" style="width: 70px; height: 70px; object-fit: cover;">
-
+                    <img src="{{ item.image_url }}" class="img-fluid rounded-3" style="width: 70px; height: 70px; object-fit: cover;">
                     <div class="ms-3 flex-grow-1">
                         <h6 class="fw-bold">{{ item.quantity }} x {{ item.name }}</h6>
-                        <p class="text-muted small">{{ item.category }}</p>
+                        <p class="text-muted small mb-0">{{ item.category }}</p>
                     </div>
-
                 </div>
             {% endfor %}
         {% else %}
-            <p class="text-center text-muted">Votre panier est vide.</p>
+            <div class="text-center py-5">
+                <i class="bi bi-cart-x display-1 text-light"></i>
+                <p class="text-muted mt-3">Votre panier est vide.</p>
+            </div>
         {% endif %}
 
     </div>
 
-    <!-- Footer -->
     <div class="p-4 border-top">
-        <a href="/checkout" class="btn btn-dark w-100 py-3">CAISSE</a>
+        <a href="/checkout" class="btn btn-dark w-100 py-3 rounded-pill fw-bold">CAISSE</a>
     </div>
 
 </div>
-
 
 <!-- =========================================================
      SCRIPTS
      ========================================================= -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+
+
+
 
 </body>
 </html>
