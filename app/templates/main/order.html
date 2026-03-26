@@ -1,0 +1,145 @@
+{% extends "base.html" %}
+
+{% block styles %}
+<style>
+    /* Design des cartes dans la grille */
+    .dish-card { transition: all 0.3s ease; border: none; }
+    .dish-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.1)!important; }
+    
+    /* Style spécifique pour la Modal large (2 colonnes) */
+    @media (min-width: 992px) {
+        .modal-lg-custom { max-width: 900px; }
+    }
+    .modal-img-container {
+        height: 100%;
+        min-height: 400px;
+        object-fit: cover;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="text-center mb-5">
+        <h1 class="display-4 fw-bold text-uppercase">Commander</h1>
+        <p class="text-muted">Sélectionnez votre plat iko's et personnalisez votre livraison</p>
+    </div>
+
+    <div class="d-flex justify-content-center gap-2 mb-5 flex-wrap">
+        <button class="btn btn-dark rounded-pill px-4 filter-btn active" data-filter="tous">Tous</button>
+        <button class="btn btn-outline-dark rounded-pill px-4 filter-btn" data-filter="entrées">Entrées</button>
+        <button class="btn btn-outline-dark rounded-pill px-4 filter-btn" data-filter="plats">Plats</button>
+        <button class="btn btn-outline-dark rounded-pill px-4 filter-btn" data-filter="desserts">Desserts</button>
+    </div>
+
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        {% for dish in dishes %}
+        <div class="col dish-item" data-category="{{ dish.category | lower }}">
+            <div class="card h-100 rounded-4 overflow-hidden shadow-sm dish-card">
+                <img src="{{ dish.image_url or url_for('static', filename='img/default-dish.jpg') }}" class="card-img-top" style="height: 200px; object-fit: cover;">
+                <div class="card-body p-4 text-center">
+                    <h5 class="fw-bold">{{ dish.name }}</h5>
+                    <p class="text-primary fw-bold">{{ "%.2f"|format(dish.price) }} CHF</p>
+                    
+                    <button class="btn btn-dark w-100 rounded-pill fw-bold" 
+                            data-bs-toggle="modal" 
+                            data-bs-target="#orderModal"
+                            data-dish-id="{{ dish.id }}"
+                            data-dish-name="{{ dish.name }}"
+                            data-dish-price="{{ dish.price }}"
+                            data-dish-desc="{{ dish.description }}"
+                            data-dish-img="{{ dish.image_url or url_for('static', filename='img/default-dish.jpg') }}">
+                        COMMANDER
+                    </button>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<div class="modal fade" id="orderModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg-custom">
+        <div class="modal-content rounded-4 border-0 overflow-hidden shadow-lg">
+            <div class="row g-0">
+                <div class="col-lg-6 d-none d-lg-block bg-light">
+                    <img id="modalDishImg" src="" class="w-100 modal-img-container" alt="Plat">
+                    <div class="p-4">
+                        <h3 id="modalDishName" class="fw-bold"></h3>
+                        <p id="modalDishDesc" class="text-muted small"></p>
+                        <div class="d-flex gap-3 text-dark small fw-bold">
+                            <span><i class="bi bi-clock"></i> 15-20 min</span>
+                            <span class="text-primary"><i class="bi bi-tag"></i> <span id="modalDishPrice"></span> CHF</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6 p-4 p-md-5">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h4 class="fw-bold mb-0">Finaliser</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+
+                    <form action="{{ url_for('main.order') }}" method="POST">
+                        <input type="hidden" name="dish_id" id="modalDishId">
+                        
+                        <div class="row mb-3">
+                            <div class="col">
+                                <label class="form-label small fw-bold text-uppercase">Date</label>
+                                <input type="date" name="delivery_date" class="form-control rounded-3" required value="{{ now.strftime('%Y-%m-%d') }}">
+                            </div>
+                            <div class="col">
+                                <label class="form-label small fw-bold text-uppercase">Heure</label>
+                                <input type="time" name="delivery_time" class="form-control rounded-3" required>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold text-uppercase">Adresse de livraison</label>
+                            <textarea name="address" class="form-control rounded-3" rows="2" required>{{ current_user.address if current_user.is_authenticated }}</textarea>
+                        </div>
+
+                        <div class="row mb-4">
+                            <div class="col-4">
+                                <label class="form-label small fw-bold text-uppercase">Qté</label>
+                                <input type="number" name="quantity" value="1" min="1" class="form-control rounded-3">
+                            </div>
+                            <div class="col-8">
+                                <label class="form-label small fw-bold text-uppercase">Paiement</label>
+                                <select name="payment" class="form-select rounded-3">
+                                    <option value="card">Carte (Sur place)</option>
+                                    <option value="cash">Espèces</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-dark w-100 py-3 rounded-pill fw-bold shadow">
+                            COMMANDER MAINTENANT
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/order.js') }}"></script>
+<script>
+    // Script pour remplir la modal dynamiquement
+    const orderModal = document.getElementById('orderModal')
+    if (orderModal) {
+        orderModal.addEventListener('show.bs.modal', event => {
+            const btn = event.relatedTarget;
+            
+            // On injecte les données dans la modal
+            document.getElementById('modalDishId').value = btn.getAttribute('data-dish-id');
+            document.getElementById('modalDishName').textContent = btn.getAttribute('data-dish-name');
+            document.getElementById('modalDishPrice').textContent = btn.getAttribute('data-dish-price');
+            document.getElementById('modalDishDesc').textContent = btn.getAttribute('data-dish-desc');
+            document.getElementById('modalDishImg').src = btn.getAttribute('data-dish-img');
+        });
+    }
+</script>
+{% endblock %}
