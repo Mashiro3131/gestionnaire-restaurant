@@ -146,6 +146,19 @@ function switchAuth(view) {
     }
 }
 
+
+
+// function switchAuth(type) {
+//     if (type === 'register') {
+//         document.getElementById('section-login').style.display = 'none';
+//         document.getElementById('section-register').style.display = 'block';
+//     } else {
+//         document.getElementById('section-login').style.display = 'block';
+//         document.getElementById('section-register').style.display = 'none';
+//     }
+// }
+
+
 /**
  * Fonction pour les commandes
  */
@@ -178,3 +191,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 });
+
+
+
