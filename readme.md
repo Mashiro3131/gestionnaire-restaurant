@@ -4,13 +4,13 @@
 
 Ce projet est un gestionnaire de restaurant développé en Python avec le framework Flask. Il permet au restaurateur de gérer son menu, les commandes et les clients, tandis que les clients peuvent consulter le menu, passer des commandes et gérer leur profil.
 
-# 🥗 Iko's Restaurant - Plateforme de Commande Online
+# Iko's Restaurant
 
 Projet réalisé dans le cadre de mon **TPI (Travail Pratique Individuel)** de fin de CFC d'Informaticien. 
 L'objectif était de créer une application web complète, moderne et intuitive pour la gestion de commandes de repas.
 Il permet au restaurateur de gérer son menu, les commandes et les clients, tandis que les clients peuvent consulter le menu, passer des commandes et gérer leur profil.
 
-### ✨ Fonctionnalités Clés
+### Fonctionnalités Clés
 * **Menu Dynamique** : Filtrage instantané par catégorie (Entrées, Plats, Desserts) sans rechargement de page.
 * **Panier Offcanvas** : Système de panier persistant via session Flask, accessible depuis n'importe quelle page.
 * **Authentification Sécurisée** : Gestion des utilisateurs (Login/Register) avec Flask-Login et protection des mots de passe (Hachage).
@@ -19,7 +19,7 @@ Il permet au restaurateur de gérer son menu, les commandes et les clients, tand
 
 ---
 
-## 🛠️ Stack Technique
+## Stack Technique
 Pour ce projet, j'ai choisi des technologies robustes et modernes :
 
 * **Backend** : Python 3.x avec le framework **Flask**.
@@ -29,7 +29,7 @@ Pour ce projet, j'ai choisi des technologies robustes et modernes :
 
 ---
 
-## 📦 Installation & Lancement
+## Installation & Lancement
 
 1. **Cloner le projet**
    ```bash
@@ -61,6 +61,7 @@ Press CTRL+C to quit
  * Debugger is active!
  * Debugger PIN: 415-005-036
 ```
+
 ## Sources
 
 - [Flask Mega-Tutorial de Miguel Grinberg](https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-v-user-logins)
