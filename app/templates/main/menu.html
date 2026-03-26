@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container py-5">
+    <div class="text-center mb-5">
+        <h1 class="display-4 fw-bold text-uppercase" style="letter-spacing: 3px;">La Carte</h1>
+        <div class="mx-auto bg-dark" style="height: 3px; width: 60px;"></div>
+    </div>
+
+    {% for category in ['entrées', 'plats', 'desserts', 'boissons'] %}
+    <div class="mb-5">
+        <h3 class="text-uppercase fw-bold mb-4 border-bottom pb-2">{{ category }}</h3>
+        <div class="row">
+            {% for dish in dishes if dish.category == category %}
+            <div class="col-md-6 mb-3">
+                <div class="d-flex justify-content-between align-items-baseline border-bottom border-dotted">
+                    <h5 class="fw-bold mb-0">{{ dish.name }}</h5>
+                    <span class="fw-bold">{{ "%.2f"|format(dish.price) }} CHF</span>
+                </div>
+                <p class="text-muted small">{{ dish.description }}</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
