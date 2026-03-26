@@ -33,74 +33,17 @@
 
         <!-- Call To Action -->
         <div class="d-flex justify-content-center gap-3">
-            <a href="#menu" class="btn btn-success btn-lg px-5">
+            <a href="main.menu" class="btn btn-success btn-lg px-5">
                 View Menu
             </a>
 
-            <a href="/order" class="btn btn-light btn-lg px-5">
+            <a href="main.order" class="btn btn-light btn-lg px-5">
                 Order Delivery
             </a>
         </div>
 
     </div>
 </section>
-
-
-<!-- =========================================================
-     SECTION AVIS CLIENTS (Social Proof)
-     ========================================================= -->
-<section class="py-5 bg-light">
-
-    <div class="container text-center">
-
-        <!-- Titre -->
-        <h2 class="fw-bold mb-2">
-            Trusted by Thousands of Happy Customers
-        </h2>
-
-        <p class="text-muted mb-5"></p>
-
-        <!-- Grille d'avis -->
-        <div class="row g-4">
-
-            {% for i in range(3) %}
-            <div class="col-md-4">
-
-                <div class="card border-0 shadow-sm p-4 text-start"
-                     style="border-radius: 15px;">
-
-                    <!-- Header avis -->
-                    <div class="d-flex align-items-center mb-3">
-
-                        <!-- Avatar -->
-                        <div class="rounded-circle bg-secondary me-3"
-                             style="width: 50px; height: 50px;">
-                        </div>
-
-                        <!-- Infos utilisateur -->
-                        <div>
-                            <h6 class="mb-0 fw-bold">Viezh Robert</h6>
-                            <small class="text-muted">Warsaw, Poland</small>
-                        </div>
-
-                        <!-- Note -->
-                        <span class="ms-auto fw-bold">4.5 ★</span>
-                    </div>
-
-                    <!-- Contenu avis -->
-                    <p class="text-muted small">
-                        "Wow... I am very happy with my order, it turned out to be more than my expectations"
-                    </p>
-
-                </div>
-
-            </div>
-            {% endfor %}
-
-        </div>
-    </div>
-</section>
-
 
 <!-- =========================================================
      MENU SECTION : Affichage des plats
@@ -142,10 +85,6 @@
                      alt="Iko's"
                      height="60"
                      class="mb-3">
-
-                <p class="text-muted small">
-                    Our vision is to provide convenience and help increase your sales business.
-                </p>
 
                 <!-- Réseaux sociaux -->
                 <div class="d-flex gap-3">
