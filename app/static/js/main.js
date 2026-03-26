@@ -145,3 +145,36 @@ function switchAuth(view) {
         registerView.style.display = isReg ? 'block' : 'none';
     }
 }
+
+/**
+ * Fonction pour les commandes
+ */
+
+document.addEventListener('DOMContentLoaded', function() {
+    const buttons = document.querySelectorAll('.filter-btn');
+    const items = document.querySelectorAll('.dish-item');
+
+    buttons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            // Update l'état visuel des boutons
+            buttons.forEach(b => {
+                b.classList.remove('btn-dark', 'active');
+                b.classList.add('btn-outline-dark');
+            });
+            btn.classList.add('btn-dark', 'active');
+            btn.classList.remove('btn-outline-dark');
+
+            // Filtrage des éléments
+            const filter = btn.getAttribute('data-filter');
+            
+            items.forEach(item => {
+                const category = item.getAttribute('data-category');
+                if (filter === 'tous' || category === filter) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        });
+    });
+});
